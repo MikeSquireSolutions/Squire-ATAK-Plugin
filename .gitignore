@@ -75,3 +75,4 @@ sdk/android_keystore
 
 #espresso
 espresso
+/.takdev/plugin.properties
