@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/squire_mic_fragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:clickable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <view class="com.atakmap.android.helloworld.fragment.MicrophoneFragment$CircleVisualizerView"
+        android:id="@+id/mic_main_box"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rounded_edge"/>
+
+    <ImageView
+        android:id="@+id/mic_squire_logo"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_alignTop="@id/mic_main_box"
+        android:layout_alignLeft="@id/mic_main_box"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/white_squire_solutions_logo"/>
+
+    <TextView
+        android:id="@+id/squire_spoken_text"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/mic_frag_circle_logo"
+        android:layout_alignLeft="@id/mic_main_box"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"
+
+        />
+
+    <ImageView
+        android:id="@+id/mic_frag_circle_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignLeft="@id/mic_squire_logo"
+        android:layout_alignTop="@id/mic_squire_logo"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="95dp"
+        android:foregroundGravity="top"
+        android:src="@drawable/red_mic"
+        android:contentDescription="" />
+
+</RelativeLayout>

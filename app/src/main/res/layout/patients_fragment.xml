@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/patients_call_sign_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        android:text="Call Sign:"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+    />
+
+    <TextView
+        android:id="@+id/patients_call_sign_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/patients_call_sign_label"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:lines="1"
+    />
+
+    <RadioGroup
+        android:id="@+id/patients_priority_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patients_call_sign_edit">
+
+        <TextView
+            android:id="@+id/patients_priority_group_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Patient Priority"
+            android:textAlignment="center"
+            android:textSize="@dimen/largeFontSize"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/patients_priority_convenience"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Convenience" />
+
+        <RadioButton
+            android:id="@+id/patients_priority_routine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Routine" />
+
+        <RadioButton
+            android:id="@+id/patients_priority_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Priority" />
+
+        <RadioButton
+            android:id="@+id/patients_priority_urgent_surgical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Urgent Surgical" />
+
+        <RadioButton
+            android:id="@+id/patients_priority_urgent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Urgent" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/patients_status_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/patients_priority_radio_group">
+
+        <TextView
+            android:id="@+id/patients_status_group_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Patient Status"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/patients_status_ambulatory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ambulatory"/>
+
+        <RadioButton
+            android:id="@+id/patients_status_litter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Litter" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/patient_bt_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sensors"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/patients_status_radio_group"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/patient_heartrate_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HR: -- "
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/patient_bt_label"
+        android:textStyle="bold" />
+    <Button
+        android:id="@+id/patients_select_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        style="@style/darkButton"
+        android:padding="8dp"
+        android:text="Select Device"
+        app:layout_constraintTop_toTopOf="@id/patient_heartrate_text"
+        app:layout_constraintBottom_toBottomOf="@id/patient_heartrate_text"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <Button
+        android:id="@+id/patients_delete_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        style="@style/darkButton"
+        android:padding="10dp"
+        android:text="Remove"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+    <Button
+        android:id="@+id/patients_next_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        style="@style/darkButton"
+        android:padding="10dp"
+        android:text="Next"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+    />
+
+    <Button
+        android:id="@+id/patients_prev_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        android:padding="10dp"
+        style="@style/darkButton"
+        android:text="Prev"
+        app:layout_constraintRight_toLeftOf="@id/patients_next_patient"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

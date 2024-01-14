@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/squire_nineline_location_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Location: "
+    />
+
+    <TextView
+        android:id="@+id/squire_nineline_location_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_location_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_rf_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_location_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Radio Frequency: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_rf_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_rf_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_patients_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_rf_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Patients: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_patients_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_patients_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_equipment_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_patients_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Equipment: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_equipment_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_equipment_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_number_of_patients_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_equipment_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Number of Patients: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_number_of_patients_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_number_of_patients_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_security_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_number_of_patients_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Security At Pickup: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_security_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_security_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_method_of_marking_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_security_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Method of Marking: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_method_of_marking_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_method_of_marking_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_nationality_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_method_of_marking_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Nationality: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_nationality_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_nationality_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_nbc_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_nationality_value"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="NBC: "
+        />
+
+    <TextView
+        android:id="@+id/squire_nineline_nbc_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeFontSize"
+        app:layout_constraintTop_toBottomOf="@id/squire_nineline_nbc_label"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text=""
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

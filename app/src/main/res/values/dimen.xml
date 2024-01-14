@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- font size big enough for most things; MGRS coordinate, etc, so at least ~18 characters of MGRS in a typical dropdown width -->
+    <dimen name="fontSize">14sp</dimen>
+
+    <dimen name="largeFontSize">20sp</dimen>
+
+    <attr name="alpha">100</attr>
+
+</resources>
+
