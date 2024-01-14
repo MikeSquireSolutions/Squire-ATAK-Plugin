@@ -132,7 +132,7 @@ import io.reactivex.rxjava3.functions.Consumer;
  * activities within the system.   This defines a concrete
  * thought or idea.
  */
-public class HelloWorldMapComponent extends DropDownMapComponent {
+public class SquireMapComponent extends DropDownMapComponent {
 
     public static final String TAG = "HelloWorldMapComponent";
 
@@ -141,9 +141,9 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
     public static final String SQUIRE_NOTIFICATION_KEY_UID = "uid";
 
     private Context pluginContext;
-    private HelloWorldDropDownReceiver dropDown;
+    private SquireDropDownReceiver dropDown;
     private WebViewDropDownReceiver wvdropDown;
-    private HelloWorldMapOverlay mapOverlay;
+    private SquireMapOverlay mapOverlay;
     private View genericRadio;
     private SpecialDetailHandler sdh;
     private CotDetailHandler aaaDetailHandler;
@@ -279,7 +279,7 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
                 });
 
         //HelloWorld MapOverlay added to Overlay Manager.
-        this.mapOverlay = new HelloWorldMapOverlay(view, pluginContext);
+        this.mapOverlay = new SquireMapOverlay(view, pluginContext);
         view.getMapOverlayManager().addOverlay(this.mapOverlay);
 
         //MapView.getMapView().getRootGroup().getChildGroupById(id).setVisible(true);
@@ -297,7 +297,7 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
         // trigger for this visual component is an intent.
         // see the plugin.HelloWorldTool where that intent
         // is triggered.
-        this.dropDown = new HelloWorldDropDownReceiver(view, context,
+        this.dropDown = new SquireDropDownReceiver(view, context,
                 this.mapOverlay, this);
 
         // We use documented intent filters within the system
@@ -306,15 +306,15 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
 
         Log.d(TAG, "registering the show hello world filter");
         DocumentedIntentFilter ddFilter = new DocumentedIntentFilter();
-        ddFilter.addAction(HelloWorldDropDownReceiver.SHOW_HELLO_WORLD,
+        ddFilter.addAction(SquireDropDownReceiver.SHOW_HELLO_WORLD,
                 "Show the Hello World drop-down");
-        ddFilter.addAction(HelloWorldDropDownReceiver.CHAT_HELLO_WORLD,
+        ddFilter.addAction(SquireDropDownReceiver.CHAT_HELLO_WORLD,
                 "Chat message sent to the Hello World contact");
-        ddFilter.addAction(HelloWorldDropDownReceiver.SEND_HELLO_WORLD,
+        ddFilter.addAction(SquireDropDownReceiver.SEND_HELLO_WORLD,
                 "Sending CoT to the Hello World contact");
-        ddFilter.addAction(HelloWorldDropDownReceiver.LAYER_DELETE,
+        ddFilter.addAction(SquireDropDownReceiver.LAYER_DELETE,
                 "Delete example layer");
-        ddFilter.addAction(HelloWorldDropDownReceiver.LAYER_VISIBILITY,
+        ddFilter.addAction(SquireDropDownReceiver.LAYER_VISIBILITY,
                 "Toggle visibility of example layer");
         this.registerDropDownReceiver(this.dropDown, ddFilter);
         Log.d(TAG, "registered the show hello world filter");
@@ -376,7 +376,7 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
                                 "helloWorldPreference",
                                 context.getResources().getDrawable(
                                         R.drawable.ic_launcher, null),
-                                new HelloWorldPreferenceFragment(context)));
+                                new SquirePreferenceFragment(context)));
 
         // example for how to register a radio with the radio map control.
 
@@ -764,7 +764,7 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
                     })
                     .setPositiveButton("Ok", (dialog, which) -> {
                         currentAlerts.remove(submission.uid);
-                        Log.d(HelloWorldDropDownReceiver.TAG, "Clicked accept");
+                        Log.d(SquireDropDownReceiver.TAG, "Clicked accept");
                     })
                     .setNegativeButton("Read Back", (dialogInterface, i) -> {
                         currentAlerts.remove(submission.uid);
@@ -1228,7 +1228,7 @@ public class HelloWorldMapComponent extends DropDownMapComponent {
                 Intent hrIntent = new Intent(Intent.ACTION_SEND);
                 hrIntent.putExtra("hr", data.hr);
                 android.util.Log.d(TAG, "Before set patient ui");
-                HelloWorldDropDownReceiver.setPatientUIHR(data.hr, patientUuid);
+                SquireDropDownReceiver.setPatientUIHR(data.hr, patientUuid);
 
                 // Send to others on ATAK network
                 {

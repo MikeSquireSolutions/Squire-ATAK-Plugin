@@ -1,10 +1,10 @@
 
-package com.atakmap.android.squire.routes;
+package com.atakmap.android.helloworld.routes;
 
 import android.app.AlertDialog;
 import android.content.Context;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.hierarchy.HierarchyListItem;
 import com.atakmap.android.hierarchy.items.MapItemUser;
 import com.atakmap.android.importexport.ExportMarshal;

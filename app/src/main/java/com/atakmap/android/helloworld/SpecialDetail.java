@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import com.atakmap.android.dropdown.DropDown.OnStateListener;
 import com.atakmap.android.dropdown.DropDownReceiver;
@@ -10,7 +10,7 @@ import com.atakmap.android.maps.MapItem;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.maps.PointMapItem;
 import com.atakmap.coremap.log.Log;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import android.content.Context;
 import android.content.Intent;
 

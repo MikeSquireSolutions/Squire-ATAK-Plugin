@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.adapter;
+package com.atakmap.android.helloworld.adapter;
 
 import android.util.Log;
 import android.view.View;
@@ -8,10 +8,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.HelloWorldMapComponent;
-import com.atakmap.android.squire.models.Report;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.SquireMapComponent;
+import com.atakmap.android.helloworld.models.Report;
+import com.atakmap.android.helloworld.plugin.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "report Clicked.");
-                    String message = HelloWorldMapComponent.submissionToMessage(report);
-                    HelloWorldDropDownReceiver.showReport(message);
-                    HelloWorldDropDownReceiver.closeReportDialog();
+                    String message = SquireMapComponent.submissionToMessage(report);
+                    SquireDropDownReceiver.showReport(message);
+                    SquireDropDownReceiver.closeReportDialog();
                 }
             };
 
@@ -66,7 +66,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(HelloWorldDropDownReceiver.deviceAdapterView);
+        return new ViewHolder(SquireDropDownReceiver.deviceAdapterView);
     }
 
     @Override

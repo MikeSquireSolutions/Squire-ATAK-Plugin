@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -36,10 +36,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.models.LZ;
-import com.atakmap.android.squire.plugin.R;
-import com.atakmap.android.squire.utils.RecognizerUtil;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.models.LZ;
+import com.atakmap.android.helloworld.plugin.R;
+import com.atakmap.android.helloworld.utils.RecognizerUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -151,13 +151,13 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
             return;
         }
         Log.d(TAG, "Title: \"" + squireTitle + "\"");
-        if (squireTitle.equalsIgnoreCase(HelloWorldDropDownReceiver.MIST_TITLE_STR)) {
+        if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.MIST_TITLE_STR)) {
             bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.MIST_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(HelloWorldDropDownReceiver.NINLINE_TITLE_STR)) {
+        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.NINLINE_TITLE_STR)) {
             bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.NINELINE_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(HelloWorldDropDownReceiver.PATIENT_TITLE_STR)) {
+        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.PATIENT_TITLE_STR)) {
             bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.PATIENT_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(HelloWorldDropDownReceiver.LZ_TITLE_STR)) {
+        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.LZ_TITLE_STR)) {
             bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.LZ_CHOICES);
         }
 
@@ -194,7 +194,7 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
         reCheckMap.put(RecognizerUtil.PATIENT_PRIORITY, RecognizerUtil.PATIENT_PRIORITY_CHOICES);
 
         // Location is used by different view but I only want to parse more if it's a nineline location
-        if (squireTitle.equalsIgnoreCase(HelloWorldDropDownReceiver.NINLINE_TITLE_STR)) {
+        if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.NINLINE_TITLE_STR)) {
             Gson gson = new Gson();
             Set<String> locationChoices = new HashSet<>();
             SharedPreferences medevacPrefs = getActivity().getSharedPreferences(prefs_name_string, Context.MODE_PRIVATE);
@@ -506,7 +506,7 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
                              Bundle savedInstanceState) {
 
         Log.i(TAG, "on create view for mic fragment");
-        View view = HelloWorldDropDownReceiver.micFragView;
+        View view = SquireDropDownReceiver.micFragView;
         Window window = getDialog().getWindow();
 
         this.circleVisualizerView = view.findViewById(R.id.mic_main_box);

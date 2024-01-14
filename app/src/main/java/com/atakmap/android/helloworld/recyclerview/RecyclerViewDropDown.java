@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.recyclerview;
+package com.atakmap.android.helloworld.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.atakmap.android.dropdown.DropDownReceiver;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.maps.MapEvent;
 import com.atakmap.android.maps.MapEventDispatcher;
 import com.atakmap.android.maps.MapItem;

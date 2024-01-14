@@ -1,11 +1,11 @@
-package com.atakmap.android.squire.db;
+package com.atakmap.android.helloworld.db;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.atakmap.android.squire.models.HeartRate;
-import com.atakmap.android.squire.models.Patient;
-import com.atakmap.android.squire.models.Report;
+import com.atakmap.android.helloworld.models.HeartRate;
+import com.atakmap.android.helloworld.models.Patient;
+import com.atakmap.android.helloworld.models.Report;
 
 import java.util.HashMap;
 import java.util.List;

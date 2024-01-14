@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.importer;
+package com.atakmap.android.helloworld.importer;
 
 import android.widget.Toast;
 

@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -15,10 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.models.LZ;
-import com.atakmap.android.squire.plugin.R;
-import com.atakmap.android.squire.utils.RecognizerUtil;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.models.LZ;
+import com.atakmap.android.helloworld.plugin.R;
+import com.atakmap.android.helloworld.utils.RecognizerUtil;
 import com.google.gson.Gson;
 
 import gov.nasa.worldwind.geom.Angle;
@@ -44,7 +44,7 @@ public class LZFragment extends Fragment {
         super.onCreate(saved);
         Context ctx = getContext();
         float density = ctx.getResources().getDisplayMetrics().density;
-        HelloWorldDropDownReceiver.setHeight(Math.round(300 * density));
+        SquireDropDownReceiver.setHeight(Math.round(300 * density));
 
         // Read saved data or init it
         Gson gson = new Gson();
@@ -57,7 +57,7 @@ public class LZFragment extends Fragment {
         }
 
         // Grab those ui components
-        View view = HelloWorldDropDownReceiver.lzFragView;
+        View view = SquireDropDownReceiver.lzFragView;
         nameInput = view.findViewById(R.id.lz_name_value);
         descriptionInput = view.findViewById(R.id.lz_desc_value);
         mgrsInput = view.findViewById(R.id.lz_mgrs_value);
@@ -116,7 +116,7 @@ public class LZFragment extends Fragment {
     }
 
     public void updateUI() {
-        HelloWorldDropDownReceiver.setSquireFragmentHeightDP(425);
+        SquireDropDownReceiver.setSquireFragmentHeightDP(425);
 
         nameInput.setText(currentLZ.getName());
         mgrsInput.setText(currentLZ.getMgrs());

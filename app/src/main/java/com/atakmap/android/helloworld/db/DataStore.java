@@ -1,15 +1,15 @@
-package com.atakmap.android.squire.db;
+package com.atakmap.android.helloworld.db;
 
-import static com.atakmap.android.squire.db.DataStore.DATA_STRUCT_TYPE.LIST;
-import static com.atakmap.android.squire.db.DataStore.DATA_STRUCT_TYPE.MAP;
-import static com.atakmap.android.squire.db.DataStore.DATA_STRUCT_TYPE.NONE;
-import static com.atakmap.android.squire.db.DataStore.DATA_STRUCT_TYPE.SET;
+import static com.atakmap.android.helloworld.db.DataStore.DATA_STRUCT_TYPE.LIST;
+import static com.atakmap.android.helloworld.db.DataStore.DATA_STRUCT_TYPE.MAP;
+import static com.atakmap.android.helloworld.db.DataStore.DATA_STRUCT_TYPE.NONE;
+import static com.atakmap.android.helloworld.db.DataStore.DATA_STRUCT_TYPE.SET;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.atakmap.android.squire.models.Report;
+import com.atakmap.android.helloworld.models.Report;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

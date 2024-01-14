@@ -7,7 +7,7 @@ import android.content.Context;
 import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.preference.PluginPreferenceFragment;
 
-public class HelloWorldSubPreferenceFragment extends PluginPreferenceFragment {
+public class SquireSubPreferenceFragment extends PluginPreferenceFragment {
 
     private static Context staticPluginContext;
     public static final String TAG = "HellWorldPreferenceFragment";
@@ -16,12 +16,12 @@ public class HelloWorldSubPreferenceFragment extends PluginPreferenceFragment {
      * Only will be called after this has been instantiated with the 1-arg constructor.
      * Fragments must have a zero arg constructor.
      */
-    public HelloWorldSubPreferenceFragment() {
+    public SquireSubPreferenceFragment() {
         this(staticPluginContext);
     }
 
     @SuppressLint("ValidFragment")
-    public HelloWorldSubPreferenceFragment(final Context pluginContext) {
+    public SquireSubPreferenceFragment(final Context pluginContext) {
         super(pluginContext, R.xml.subpreferences);
         staticPluginContext = pluginContext;
     }

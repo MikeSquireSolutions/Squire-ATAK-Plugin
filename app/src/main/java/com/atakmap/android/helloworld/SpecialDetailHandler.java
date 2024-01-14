@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import com.atakmap.android.cot.MarkerDetailHandler;
 import com.atakmap.android.maps.Marker;

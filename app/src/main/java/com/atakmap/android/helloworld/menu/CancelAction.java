@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.menu;
+package com.atakmap.android.helloworld.menu;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.models;
+package com.atakmap.android.helloworld.models;
 
 public class LZ {
 

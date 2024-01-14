@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.layers;
+package com.atakmap.android.helloworld.layers;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.ipc.AtakBroadcast.DocumentedIntentFilter;
 import com.atakmap.android.layers.LayerDownloader;

@@ -125,7 +125,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * post things to the ui thread.   You use the plugin context
  * to lookup resources contained specifically in the plugin.
  */
-public class HelloWorldDropDownReceiver extends DropDownReceiver implements
+public class SquireDropDownReceiver extends DropDownReceiver implements
         OnStateListener, SensorEventListener {
 
     //private final NotificationManager nm;
@@ -160,8 +160,8 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
 
     private final Context pluginContext;
     private final Contact squireMedevacContact;
-    private final HelloWorldMapOverlay mapOverlay;
-    private final HelloWorldMapComponent mapComponent;
+    private final SquireMapOverlay mapOverlay;
+    private final SquireMapComponent mapComponent;
     private final RecyclerViewDropDown recyclerView;
     private final TabViewDropDown tabView;
 
@@ -310,8 +310,8 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
         }
     }
 
-    public HelloWorldDropDownReceiver(final MapView mapView,
-                                      final Context context, HelloWorldMapOverlay overlay, HelloWorldMapComponent mapComponent) {
+    public SquireDropDownReceiver(final MapView mapView,
+                                  final Context context, SquireMapOverlay overlay, SquireMapComponent mapComponent) {
         super(mapView);
         this.pluginContext = context;
         this.mapOverlay = overlay;
@@ -359,9 +359,9 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
                 String eventString = event != null ? event.toString() : "\"\"";
                 String extrasString = extras != null ? extras.toString() : "\"\"";
 
-                Log.d(HelloWorldDropDownReceiver.TAG, "CoT received:\n\t" + eventString + "\n\t" + extrasString);
+                Log.d(SquireDropDownReceiver.TAG, "CoT received:\n\t" + eventString + "\n\t" + extrasString);
                 if (event == null) {
-                    Log.d(HelloWorldDropDownReceiver.TAG, "Event was null");
+                    Log.d(SquireDropDownReceiver.TAG, "Event was null");
                 } else {
                     synchronized (reportedUidsLock) {
                         String title = "Squire Report Received";
@@ -378,10 +378,10 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
                                 String message = mapComponent.displayAlert(mapView, title, submission);
 
                                 // If SubmissionStr was valid & alert was displayed.
-                                Log.d(HelloWorldDropDownReceiver.TAG, "Supposed to be doing alert");
+                                Log.d(SquireDropDownReceiver.TAG, "Supposed to be doing alert");
 
                                 // Build notification
-                                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, HelloWorldMapComponent.SQUIRE_NOTIFICATION_CHANNEL_ID)
+                                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, SquireMapComponent.SQUIRE_NOTIFICATION_CHANNEL_ID)
                                         .setSmallIcon(ctx.getApplicationInfo().icon)
                                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.squire_icon))
                                         .setContentTitle(title)
@@ -395,8 +395,8 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
 
                                 // Store pendingIntent (notification tap action)
                                 Intent intent = new Intent();
-                                intent.setAction(HelloWorldMapComponent.SQUIRE_NOTIFICATION_ACTION);
-                                intent.putExtra(HelloWorldMapComponent.SQUIRE_NOTIFICATION_KEY_UID, submission.uid);
+                                intent.setAction(SquireMapComponent.SQUIRE_NOTIFICATION_ACTION);
+                                intent.putExtra(SquireMapComponent.SQUIRE_NOTIFICATION_KEY_UID, submission.uid);
 
                                 // notificationId is a unique int for each notification that you must define
                                 int notificationId = (int) event.getStart().getMilliseconds();
@@ -551,7 +551,7 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
             polarDialog.show(((Activity) mapView.getContext()).getFragmentManager().beginTransaction(), "PolarDeviceDialog");
 
             Log.d(TAG, "Trying to scan...");
-            HelloWorldMapComponent.startScanThread(ctx);
+            SquireMapComponent.startScanThread(ctx);
             Log.d(TAG, "Hopefully started");
             return null;
         };
@@ -615,7 +615,7 @@ public class HelloWorldDropDownReceiver extends DropDownReceiver implements
             } else {
                 message += "";
                 message += "Please confirm the following data is correct.\n\n";
-                message += HelloWorldMapComponent.submissionToMessage(submission) + "\n\n";
+                message += SquireMapComponent.submissionToMessage(submission) + "\n\n";
             }
 
             List<LZ> lzList = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.adapter;
+package com.atakmap.android.helloworld.adapter;
 
 import android.content.Intent;
 import android.util.Log;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.models.Device;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.models.Device;
+import com.atakmap.android.helloworld.plugin.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                     intent.putExtra("startHR", deviceId);
                     intent.putExtra("patientUuid", gson.toJson(patientUuid));
                     v.getContext().sendBroadcast(intent);
-                    HelloWorldDropDownReceiver.closePolarDialog();
+                    SquireDropDownReceiver.closePolarDialog();
                 }
             };
 
@@ -77,7 +77,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(HelloWorldDropDownReceiver.deviceAdapterView, patientUuid);
+        return new ViewHolder(SquireDropDownReceiver.deviceAdapterView, patientUuid);
     }
 
     @Override

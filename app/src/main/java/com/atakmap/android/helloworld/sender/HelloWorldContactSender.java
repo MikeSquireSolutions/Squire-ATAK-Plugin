@@ -10,7 +10,7 @@
  * access to this software must be aware of the above restrictions.
  */
 
-package com.atakmap.android.squire.sender;
+package com.atakmap.android.helloworld.sender;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -19,7 +19,7 @@ import com.atakmap.android.data.URIContentRecipient;
 import com.atakmap.android.data.URIContentSender;
 import com.atakmap.android.data.URIHelper;
 import com.atakmap.android.gui.TileButtonDialog;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.importexport.send.TAKContactSender;
 import com.atakmap.android.maps.MapView;
 

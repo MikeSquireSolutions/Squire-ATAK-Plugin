@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.atakmap.android.dropdown.DropDownReceiver;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.maps.MapView;
 
 import java.util.ArrayList;

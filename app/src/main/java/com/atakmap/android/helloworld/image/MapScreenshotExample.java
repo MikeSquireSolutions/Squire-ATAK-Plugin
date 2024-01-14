@@ -1,12 +1,12 @@
 
-package com.atakmap.android.squire.image;
+package com.atakmap.android.helloworld.image;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.widget.Toast;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.imagecapture.TiledCanvas;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.tilecapture.TileCapture;

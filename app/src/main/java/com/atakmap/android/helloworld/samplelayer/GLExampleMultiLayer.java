@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.samplelayer;
+package com.atakmap.android.helloworld.samplelayer;
 
 import android.graphics.Bitmap;
 import android.util.Pair;

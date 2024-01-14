@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -14,11 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.adapter.ReportAdapter;
-import com.atakmap.android.squire.db.ReportsRepository;
-import com.atakmap.android.squire.models.Report;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.adapter.ReportAdapter;
+import com.atakmap.android.helloworld.db.ReportsRepository;
+import com.atakmap.android.helloworld.models.Report;
+import com.atakmap.android.helloworld.plugin.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -85,7 +85,7 @@ public class ReportFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = HelloWorldDropDownReceiver.reportFragView;
+        View view = SquireDropDownReceiver.reportFragView;
         reportRecyclerView = view.findViewById(R.id.reports_recyclerview);
         setRecylerViewLayout(reportRecyclerView);
         reportAdapter = new ReportAdapter(this::getDataset);
@@ -94,7 +94,7 @@ public class ReportFragment extends DialogFragment {
         submitButton = view.findViewById(R.id.reports_submit_button);
         submitButton.setOnClickListener(v -> {
             try {
-                HelloWorldDropDownReceiver.submitReportsToAtak.call();
+                SquireDropDownReceiver.submitReportsToAtak.call();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -142,7 +142,7 @@ public class ReportFragment extends DialogFragment {
             new AlertDialog.Builder(getContext())
                     .setTitle("Squire Report")
                     .setMessage(msg)
-                    .setPositiveButton("Ok", (dialog, which) -> com.atakmap.coremap.log.Log.d(HelloWorldDropDownReceiver.TAG, "Clicked accept"))
+                    .setPositiveButton("Ok", (dialog, which) -> com.atakmap.coremap.log.Log.d(SquireDropDownReceiver.TAG, "Clicked accept"))
                     .show();
         });
     }

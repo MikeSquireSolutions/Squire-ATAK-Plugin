@@ -1,8 +1,8 @@
 
-package com.atakmap.android.squire.notification;
+package com.atakmap.android.helloworld.notification;
 
-import com.atakmap.android.squire.plugin.BuildConfig;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.BuildConfig;
+import com.atakmap.android.helloworld.plugin.R;
 
 import android.app.NotificationChannel;
 import android.app.Service;

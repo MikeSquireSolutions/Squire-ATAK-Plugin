@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.recyclerview;
+package com.atakmap.android.helloworld.recyclerview;
 
 import android.content.Context;
 import android.util.AttributeSet;

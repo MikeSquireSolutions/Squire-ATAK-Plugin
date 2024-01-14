@@ -46,7 +46,7 @@ import java.util.TreeSet;
 /**
  * Example map overlay that is displayed within Overlay Manager
  */
-public class HelloWorldMapOverlay extends AbstractMapOverlay2 {
+public class SquireMapOverlay extends AbstractMapOverlay2 {
 
     private static final String TAG = "HelloWorldMapOverlay";
 
@@ -57,7 +57,7 @@ public class HelloWorldMapOverlay extends AbstractMapOverlay2 {
 
     private HelloWorldListModel _listModel;
 
-    public HelloWorldMapOverlay(MapView mapView, Context plugin) {
+    public SquireMapOverlay(MapView mapView, Context plugin) {
         _mapView = mapView;
         _plugin = plugin;
         _query = new HelloWorldDeepMapItemQuery();
@@ -155,7 +155,7 @@ public class HelloWorldMapOverlay extends AbstractMapOverlay2 {
 
         @Override
         public String getTitle() {
-            return HelloWorldMapOverlay.this.getName();
+            return SquireMapOverlay.this.getName();
         }
 
         @Override

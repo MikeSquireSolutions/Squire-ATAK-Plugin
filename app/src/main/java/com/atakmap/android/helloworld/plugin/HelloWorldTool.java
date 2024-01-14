@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.plugin;
+package com.atakmap.android.helloworld.plugin;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

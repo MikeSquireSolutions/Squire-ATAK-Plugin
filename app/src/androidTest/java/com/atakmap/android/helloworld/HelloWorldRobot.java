@@ -1,11 +1,11 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.maps.Marker;
 import com.atakmap.android.test.helpers.helper_versions.HelperFactory;
 import com.atakmap.android.test.helpers.helper_versions.HelperFunctions;

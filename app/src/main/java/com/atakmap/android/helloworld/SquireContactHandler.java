@@ -15,14 +15,14 @@ import com.atakmap.coremap.filesystem.FileSystemUtils;
 /**
  * Contact handler for the Hello World contact
  */
-public class HelloWorldContactHandler extends
+public class SquireContactHandler extends
         ContactConnectorManager.ContactConnectorHandler {
 
     private static final String TAG = "HelloWorldContactHandler";
 
     private final Context pluginContext;
 
-    public HelloWorldContactHandler(Context pluginContext) {
+    public SquireContactHandler(Context pluginContext) {
         this.pluginContext = pluginContext;
     }
 

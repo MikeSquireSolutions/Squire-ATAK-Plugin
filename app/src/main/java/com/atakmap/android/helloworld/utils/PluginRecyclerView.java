@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.utils;
+package com.atakmap.android.helloworld.utils;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.R;

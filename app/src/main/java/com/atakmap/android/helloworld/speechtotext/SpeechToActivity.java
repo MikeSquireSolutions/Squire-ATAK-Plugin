@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.speechtotext;
+package com.atakmap.android.helloworld.speechtotext;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.widget.Toast;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.coremap.log.Log;
 
 import java.util.ArrayList;

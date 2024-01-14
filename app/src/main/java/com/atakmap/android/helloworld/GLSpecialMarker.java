@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

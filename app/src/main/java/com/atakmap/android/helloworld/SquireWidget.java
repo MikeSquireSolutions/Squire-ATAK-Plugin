@@ -23,7 +23,7 @@ import com.atakmap.map.opengl.GLRenderGlobals;
 import android.content.BroadcastReceiver;
 import com.atakmap.coremap.log.Log;
 
-public class HelloWorldWidget extends AbstractWidgetMapComponent implements
+public class SquireWidget extends AbstractWidgetMapComponent implements
         OnPressListener, MapWidget.OnUnpressListener, MapWidget.OnMoveListener,
         MapWidget.OnClickListener {
 
@@ -76,10 +76,10 @@ public class HelloWorldWidget extends AbstractWidgetMapComponent implements
                 Icon icon = builder.build();
                 widget.setIcon(icon);
 
-                widget.addOnClickListener(HelloWorldWidget.this);
-                widget.addOnPressListener(HelloWorldWidget.this);
-                widget.addOnUnpressListener(HelloWorldWidget.this);
-                widget.addOnMoveListener(HelloWorldWidget.this);
+                widget.addOnClickListener(SquireWidget.this);
+                widget.addOnPressListener(SquireWidget.this);
+                widget.addOnUnpressListener(SquireWidget.this);
+                widget.addOnMoveListener(SquireWidget.this);
 
             }
             if (!getRootLayoutWidget().getChildWidgets().contains(widget))

@@ -1,11 +1,11 @@
 
-package com.atakmap.android.squire.speechtotext;
+package com.atakmap.android.helloworld.speechtotext;
 
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapGroup;
 import com.atakmap.android.maps.MapItem;

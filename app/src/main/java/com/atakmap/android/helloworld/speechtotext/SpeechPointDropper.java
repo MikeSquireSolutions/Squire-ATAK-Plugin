@@ -1,11 +1,11 @@
 
-package com.atakmap.android.squire.speechtotext;
+package com.atakmap.android.helloworld.speechtotext;
 
 import android.content.Context;
 import android.location.Address;
 import android.widget.Toast;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.user.PlacePointTool;
 import com.atakmap.android.user.geocode.GeocodeManager;

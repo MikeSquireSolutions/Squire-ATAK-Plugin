@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.service;
+package com.atakmap.android.helloworld.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.os.RemoteException;
 
 import androidx.annotation.Nullable;
 
-import com.atakmap.android.squire.aidl.ILogger;
-import com.atakmap.android.squire.aidl.SimpleService;
+import com.atakmap.android.helloworld.aidl.ILogger;
+import com.atakmap.android.helloworld.aidl.SimpleService;
 
 /**
  * Please note, this service does not run in the same process space as ATAK and therefore does not
@@ -37,7 +37,7 @@ public class ExampleAidlService extends Service {
 
     public class ExampleAidlImpl extends SimpleService.Stub {
 
-        com.atakmap.android.squire.aidl.ILogger log;
+        com.atakmap.android.helloworld.aidl.ILogger log;
 
         @Override
         public void registerLogger(final ILogger log) throws RemoteException {

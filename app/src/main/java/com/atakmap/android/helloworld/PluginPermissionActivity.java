@@ -1,6 +1,6 @@
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

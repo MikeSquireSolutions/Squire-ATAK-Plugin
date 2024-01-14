@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
 import android.content.Context;
 import com.atakmap.android.preference.AtakPreferences;

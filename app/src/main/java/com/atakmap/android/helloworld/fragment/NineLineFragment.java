@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.HelloWorldMapComponent;
-import com.atakmap.android.squire.models.NineLine;
-import com.atakmap.android.squire.models.Patient;
-import com.atakmap.android.squire.plugin.R;
-import com.atakmap.android.squire.utils.RecognizerUtil;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.SquireMapComponent;
+import com.atakmap.android.helloworld.models.NineLine;
+import com.atakmap.android.helloworld.models.Patient;
+import com.atakmap.android.helloworld.plugin.R;
+import com.atakmap.android.helloworld.utils.RecognizerUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -188,8 +188,8 @@ public class NineLineFragment extends Fragment {
         // variable names "patients" and "numPatients" are taken from the nineline standard
         // patients -> count of patients by priority
         // numPatients -> count of patients by status
-        patients = HelloWorldMapComponent.getPatientsString(currentPatientsList);
-        numPatients = HelloWorldMapComponent.getNumPatientsString(currentPatientsList);
+        patients = SquireMapComponent.getPatientsString(currentPatientsList);
+        numPatients = SquireMapComponent.getNumPatientsString(currentPatientsList);
 
         if (patients.length() > 0) {
             int numLines = patients.split("\n").length;
@@ -256,7 +256,7 @@ public class NineLineFragment extends Fragment {
             hideField(nbcValue);
         }
 
-        HelloWorldDropDownReceiver.setSquireFragmentHeightDP(dpHeight);
+        SquireDropDownReceiver.setSquireFragmentHeightDP(dpHeight);
         saveData();
     }
 
@@ -268,7 +268,7 @@ public class NineLineFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle saved) {
         super.onCreate(saved);
-        View view = HelloWorldDropDownReceiver.nineLineFragView;
+        View view = SquireDropDownReceiver.nineLineFragView;
 
         locationLabel = view.findViewById(R.id.squire_nineline_location_label);
         locationValue = view.findViewById(R.id.squire_nineline_location_value);
@@ -338,7 +338,7 @@ public class NineLineFragment extends Fragment {
             // Special case here!!
             Log.d(TAG, "I want to switch to patients view");
             //HelloWorldDropDownReceiver.swapFragments(getActivity(), HelloWorldDropDownReceiver.patientsFragment);
-            HelloWorldDropDownReceiver.patientSelectButton.callOnClick();
+            SquireDropDownReceiver.patientSelectButton.callOnClick();
             return;
 
         } else if (bestChoice.equalsIgnoreCase(RecognizerUtil.SPECIAL_EQUIPMENT_REQUIRED)) {
@@ -357,7 +357,7 @@ public class NineLineFragment extends Fragment {
             currentNineLine.setNbcContamination(NineLine.NBCContamination.valueOf(dirtyArg));
         }
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTop();
+        SquireDropDownReceiver.scrollToTop();
 
         Log.d(TAG, "Ninline speech handled. " + currentNineLine.toString());
     }

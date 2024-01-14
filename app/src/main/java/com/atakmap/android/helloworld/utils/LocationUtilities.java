@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.utils;
+package com.atakmap.android.helloworld.utils;
 
 
 import static androidx.core.app.ActivityCompat.requestPermissions;

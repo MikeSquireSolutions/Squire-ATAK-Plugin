@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.speechtotext;
+package com.atakmap.android.helloworld.speechtotext;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.atakmap.android.gui.EditText;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.ipc.AtakBroadcast;
 import com.atakmap.android.maps.MapCoreIntentsComponent;
 import com.atakmap.android.maps.MapGroup;

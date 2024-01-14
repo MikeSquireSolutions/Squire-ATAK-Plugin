@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.tools;
+package com.atakmap.android.helloworld.tools;
 
 import android.os.Bundle;
 

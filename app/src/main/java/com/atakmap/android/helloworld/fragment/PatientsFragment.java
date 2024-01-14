@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -18,11 +18,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.SquireMapComponent;
+import com.atakmap.android.helloworld.models.Patient;
 import com.atakmap.android.helloworld.plugin.R;
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.HelloWorldMapComponent;
-import com.atakmap.android.squire.models.Patient;
-import com.atakmap.android.squire.utils.RecognizerUtil;
+import com.atakmap.android.helloworld.utils.RecognizerUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.polar.sdk.api.PolarBleApi;
@@ -114,12 +114,12 @@ public class PatientsFragment extends Fragment {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             Context ctx = getContext();
         }
-        HelloWorldDropDownReceiver.setSquireFragmentHeightDP(630);
+        SquireDropDownReceiver.setSquireFragmentHeightDP(630);
         Log.d(TAG, "Set height to 1000dp");
         initData();
 
         // Grab those ui components
-        View view = HelloWorldDropDownReceiver.patientsFragView;
+        View view = SquireDropDownReceiver.patientsFragView;
         wearableButton = view.findViewById(R.id.patients_select_device);
         heartRateTextView = view.findViewById(R.id.patient_heartrate_text);
 
@@ -160,10 +160,10 @@ public class PatientsFragment extends Fragment {
         });
 
         wearableButton.setOnClickListener(v -> {
-            if (HelloWorldDropDownReceiver.testMe == null) return;
+            if (SquireDropDownReceiver.testMe == null) return;
             Log.d(TAG, "Calling static callable");
             try {
-                HelloWorldDropDownReceiver.testMe.call();
+                SquireDropDownReceiver.testMe.call();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -207,7 +207,7 @@ public class PatientsFragment extends Fragment {
     private void gotoPrev() {
         --currentPatientIdx;
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTopOfInnerView(getActivity());
+        SquireDropDownReceiver.scrollToTopOfInnerView(getActivity());
     }
 
     private void gotoNext() {
@@ -217,7 +217,7 @@ public class PatientsFragment extends Fragment {
         }
         ++currentPatientIdx;
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTopOfInnerView(getActivity());
+        SquireDropDownReceiver.scrollToTopOfInnerView(getActivity());
     }
 
     private void deletePatient() {
@@ -260,7 +260,7 @@ public class PatientsFragment extends Fragment {
     // This is much more preferable than some global state flag
     public void updateUI(boolean setCallSign) {
         Log.d(TAG, "In update ui, patients count: " + currentPatientsList.size());
-        HelloWorldDropDownReceiver.setSquireFragmentHeightDP(630);
+        SquireDropDownReceiver.setSquireFragmentHeightDP(630);
         Patient currentPatient = currentPatientsList.get(currentPatientIdx);
         boolean hasNext = currentPatientIdx + 1 < currentPatientsList.size() || !currentPatient.empty();
 
@@ -395,7 +395,7 @@ public class PatientsFragment extends Fragment {
             }
         }
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTop();
+        SquireDropDownReceiver.scrollToTop();
     }
 
 
@@ -428,24 +428,24 @@ public class PatientsFragment extends Fragment {
                 int hr = intent.getIntExtra("hr", 0);
                 setHR(hr, getCurrentPatientUUID());
             } else if (intent.hasExtra("startHR")) {
-                PolarBleApi polarApi = HelloWorldMapComponent.getPolarApi();
+                PolarBleApi polarApi = SquireMapComponent.getPolarApi();
                 if (polarApi == null) {
                     Log.d(TAG, "Tried to start HR but polarAPI was null");
                 }
 
                 Gson gson = new Gson();
                 String identifier = intent.getStringExtra("startHR");
-                if (HelloWorldMapComponent.isDeviceInMap(identifier)) {
+                if (SquireMapComponent.isDeviceInMap(identifier)) {
                     Log.d(TAG, "Identifier " + identifier + " already in deviceMap for patient " +
-                            HelloWorldMapComponent.getPatientUUID(identifier));
-                    HelloWorldMapComponent.removeDeviceFromHRSet(identifier);
+                            SquireMapComponent.getPatientUUID(identifier));
+                    SquireMapComponent.removeDeviceFromHRSet(identifier);
                 }
 
                 UUID uuid = currentPatientsList.get(currentPatientIdx).getUuid();
                 //gson.fromJson(intent.getStringExtra("patientUuid"), UUID.class);
                 Log.d(TAG, "Patients json: " + gson.toJson(currentPatientsList));
                 Log.d(TAG, "Adding device to hr set for uuid (idx " + currentPatientIdx+ ") " + uuid);
-                if (!HelloWorldMapComponent.addDeviceToHRSet(identifier, uuid)) {
+                if (!SquireMapComponent.addDeviceToHRSet(identifier, uuid)) {
                     Log.d(TAG, "Failed to add device to hr set");
                     //return;
                 }
@@ -456,7 +456,7 @@ public class PatientsFragment extends Fragment {
                     if (polarApi == null) {
                         Log.e(TAG, "polarAPI is fucked");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            HelloWorldMapComponent.setupAPI(getContext());
+                            SquireMapComponent.setupAPI(getContext());
                         }
                     }
                     if (polarApi == null) {

@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.samplelayer;
+package com.atakmap.android.helloworld.samplelayer;
 
 import com.atakmap.android.maps.MetaShape;
 import com.atakmap.android.menu.PluginMenuParser;

@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -18,10 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.adapter.DeviceAdapter;
-import com.atakmap.android.squire.models.Device;
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.adapter.DeviceAdapter;
+import com.atakmap.android.helloworld.models.Device;
+import com.atakmap.android.helloworld.plugin.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class PolarDeviceFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = HelloWorldDropDownReceiver.polarDeviceFragView;
+        View view = SquireDropDownReceiver.polarDeviceFragView;
         searchRecyclerView = view.findViewById(R.id.polar_search_recyclerView);
         setRecylerViewLayout(searchRecyclerView);
         Log.d(TAG, "Creating view golder, patientUuid: " + patientUuid);

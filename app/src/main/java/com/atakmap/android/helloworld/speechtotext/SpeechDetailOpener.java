@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.speechtotext;
+package com.atakmap.android.helloworld.speechtotext;
 
 import android.content.Intent;
 import android.widget.Toast;

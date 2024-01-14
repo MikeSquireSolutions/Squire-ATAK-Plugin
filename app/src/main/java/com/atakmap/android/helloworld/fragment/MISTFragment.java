@@ -1,4 +1,4 @@
-package com.atakmap.android.squire.fragment;
+package com.atakmap.android.helloworld.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -15,14 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.atakmap.android.squire.HelloWorldDropDownReceiver;
-import com.atakmap.android.squire.models.MIST;
-import com.atakmap.android.squire.models.NineLine;
-import com.atakmap.android.squire.models.Patient;
-import com.atakmap.android.squire.models.SignsAndSymptoms;
-import com.atakmap.android.squire.models.Treatment;
-import com.atakmap.android.squire.plugin.R;
-import com.atakmap.android.squire.utils.RecognizerUtil;
+import com.atakmap.android.helloworld.SquireDropDownReceiver;
+import com.atakmap.android.helloworld.models.MIST;
+import com.atakmap.android.helloworld.models.NineLine;
+import com.atakmap.android.helloworld.models.Patient;
+import com.atakmap.android.helloworld.models.SignsAndSymptoms;
+import com.atakmap.android.helloworld.models.Treatment;
+import com.atakmap.android.helloworld.plugin.R;
+import com.atakmap.android.helloworld.utils.RecognizerUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -96,7 +96,7 @@ public class MISTFragment extends Fragment {
         super.onCreate(saved);
 
         // TODO change to persist
-        View view = HelloWorldDropDownReceiver.mistFragView;
+        View view = SquireDropDownReceiver.mistFragView;
 
         mechanismOfInjuryLabel = view.findViewById(R.id.squire_mist_moi_label);
         mechanismOfInjuryValue = view.findViewById(R.id.squire_mist_moi_value);
@@ -132,7 +132,7 @@ public class MISTFragment extends Fragment {
     private void gotoPrev() {
         --currentMistIdx;
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTopOfInnerView(getActivity());
+        SquireDropDownReceiver.scrollToTopOfInnerView(getActivity());
     }
 
     private void gotoNext() {
@@ -142,7 +142,7 @@ public class MISTFragment extends Fragment {
         }
         ++currentMistIdx;
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTopOfInnerView(getActivity());
+        SquireDropDownReceiver.scrollToTopOfInnerView(getActivity());
     }
 
     private void deleteReport() {
@@ -482,7 +482,7 @@ public class MISTFragment extends Fragment {
         }
 
         updateUI();
-        HelloWorldDropDownReceiver.scrollToTop();
+        SquireDropDownReceiver.scrollToTop();
     }
 
     // Clears and hides text field
@@ -600,7 +600,7 @@ public class MISTFragment extends Fragment {
             hideField(treatmentValue);
         }
 
-        HelloWorldDropDownReceiver.setSquireFragmentHeightDP(dpHeight);
+        SquireDropDownReceiver.setSquireFragmentHeightDP(dpHeight);
         saveData();
     }
 

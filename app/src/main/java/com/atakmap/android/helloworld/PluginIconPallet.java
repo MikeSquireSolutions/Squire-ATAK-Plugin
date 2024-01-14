@@ -1,7 +1,7 @@
 
-package com.atakmap.android.squire;
+package com.atakmap.android.helloworld;
 
-import com.atakmap.android.squire.plugin.R;
+import com.atakmap.android.helloworld.plugin.R;
 import androidx.fragment.app.Fragment;
 import com.atakmap.android.user.icon.*;
 import com.atakmap.android.maps.Marker;

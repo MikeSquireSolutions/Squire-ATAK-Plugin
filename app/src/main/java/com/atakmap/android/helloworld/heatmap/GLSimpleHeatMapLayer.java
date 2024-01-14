@@ -1,5 +1,5 @@
 
-package com.atakmap.android.squire.heatmap;
+package com.atakmap.android.helloworld.heatmap;
 
 import android.graphics.Bitmap;
 import android.util.Pair;
