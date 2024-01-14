@@ -13,11 +13,11 @@ import com.atakmap.android.navigation.models.NavButtonModel;
 
 import gov.tak.api.util.Disposable;
 
-public class HelloWorldTool extends AbstractPluginTool implements Disposable {
+public class SquireTool extends AbstractPluginTool implements Disposable {
 
     private final static String TAG = "HelloworldTool";
 
-    public HelloWorldTool(final Context context) {
+    public SquireTool(final Context context) {
         super(context,
                 context.getString(R.string.app_name),
                 context.getString(R.string.app_name),
@@ -37,7 +37,7 @@ public class HelloWorldTool extends AbstractPluginTool implements Disposable {
         public void onReceive(Context c, Intent intent) {
             // Get the button model used by this plugin
             NavButtonModel mdl = NavButtonManager.getInstance()
-                    .getModelByPlugin(HelloWorldTool.this);
+                    .getModelByPlugin(SquireTool.this);
             if (mdl != null) {
                 // Increment the badge count and refresh
                 mdl.setBadgeCount(++count);
