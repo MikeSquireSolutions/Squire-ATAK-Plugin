@@ -38,7 +38,7 @@ import gov.nasa.worldwind.geom.coords.MGRSCoord;
 
 public class MISTFragment extends Fragment {
     private static final String TAG = "MISTFragment";
-    public MISTFragment() {
+    public MISTFragment(Context context) {
         super();
     }
 

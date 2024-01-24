@@ -33,7 +33,7 @@ import gov.nasa.worldwind.geom.coords.MGRSCoord;
 
 public class NineLineFragment extends Fragment {
     private static final String TAG = "NineLineFragment";
-    public NineLineFragment() {
+    public NineLineFragment(Context context) {
         super();
     }
 

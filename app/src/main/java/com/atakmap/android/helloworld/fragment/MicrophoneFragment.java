@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -151,14 +152,16 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
             return;
         }
         Log.d(TAG, "Title: \"" + squireTitle + "\"");
-        if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.MIST_TITLE_STR)) {
-            bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.MIST_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.NINLINE_TITLE_STR)) {
-            bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.NINELINE_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.PATIENT_TITLE_STR)) {
-            bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.PATIENT_CHOICES);
-        } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.LZ_TITLE_STR)) {
-            bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.LZ_CHOICES);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.MIST_TITLE_STR)) {
+                bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.MIST_CHOICES);
+            } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.NINLINE_TITLE_STR)) {
+                bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.NINELINE_CHOICES);
+            } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.PATIENT_TITLE_STR)) {
+                bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.PATIENT_CHOICES);
+            } else if (squireTitle.equalsIgnoreCase(SquireDropDownReceiver.LZ_TITLE_STR)) {
+                bestChoice = RecognizerUtil.findBestChoice(speechText, RecognizerUtil.LZ_CHOICES);
+            }
         }
 
         if (bestChoice == null) {
@@ -242,7 +245,10 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
                 lastArgsLength = args.length();
                 Log.d(TAG, "Re-checking Args. Prior: " + args);
                 String[] choices = reCheckMap.get(key);
-                Pair<String, String> match = RecognizerUtil.findBestChoice(args, choices);
+                Pair<String, String> match = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    match = RecognizerUtil.findBestChoice(args, choices);
+                }
                 String newArgs = match.getLeft();
                 String originalArg = match.getRight();
                 Log.d(TAG, "arg: " + newArgs + ", orig: " + originalArg);
@@ -287,7 +293,9 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
 
                 Log.i(TAG, "Confirmed words (setText): " + r);
                 squireProcess(r);
-                getContext().sendBroadcast(returnIntent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    getContext().sendBroadcast(returnIntent);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -411,7 +419,9 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
         SharedPreferences sharedSettingsPreferences = getActivity().getSharedPreferences(prefs_name_string, MODE_PRIVATE);
 
         Log.i(TAG, "Registering mic fragment");
-        speech = SpeechRecognizer.createSpeechRecognizer(getContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            speech = SpeechRecognizer.createSpeechRecognizer(getContext());
+        }
         speech.setRecognitionListener(this);
         returnIntent = new Intent(MEDEVAC_SPEECH_INFO);
         boolean offlineFlag = sharedSettingsPreferences.getBoolean("offline",  true);
@@ -428,16 +438,18 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1); // Debug
 
         Log.i(TAG, "Starting listening mic fragment");
-        if (ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Not allowed, trying to request permission");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                Log.i(TAG, "Not allowed, trying to request permission");
 
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
-                    REQUEST_RECORD_PERMISSION);
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO},
+                        REQUEST_RECORD_PERMISSION);
 
-        } else {
-            Log.i(TAG, "Allowed, should be good.");
-            speech.startListening(recognizerIntent);
+            } else {
+                Log.i(TAG, "Allowed, should be good.");
+                speech.startListening(recognizerIntent);
+            }
         }
     }
 
@@ -455,7 +467,9 @@ public class MicrophoneFragment extends DialogFragment implements RecognitionLis
 
                 speech.startListening(recognizerIntent);
             } else {
-                Toast.makeText(getContext(), "Permission denied. Cannot listen.", Toast.LENGTH_LONG).show();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Toast.makeText(getContext(), "Permission denied. Cannot listen.", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }

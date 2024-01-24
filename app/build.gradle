@@ -82,7 +82,7 @@ allprojects {
 
 apply plugin: 'com.android.application'
 apply plugin: 'atak-takdev-plugin'
-
+apply plugin: 'kotlin-android'
 
 def supportedFlavors = 
 [
@@ -245,12 +245,13 @@ dependencies {
 
     implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.16.0'
-    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.0.1'
+    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.1.0'
     implementation group: 'gov.nasa', name: 'worldwind', version: '2.0.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     // Recyclerview version depends on some androidx libraries which
@@ -276,7 +277,7 @@ dependencies {
 
 }
 
-configurations.all {
+configurations.configureEach {
     resolutionStrategy.eachDependency { details ->
         if (details.requested.group == 'androidx.core') {
             details.useVersion "1.8.0"

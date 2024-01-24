@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,18 +38,22 @@ public class PatientsFragment extends Fragment {
     private static final String TAG = "PatientsFragment";
     private static final String prefs_name_string = "squire_medevac";
 
-    public PatientsFragment() {
+    private Context mContext;
+
+    @SuppressLint("ValidFragment")
+    public PatientsFragment(Context context) {
         super();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SEND);
-        Context context = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            context = getContext();
-        }
-        if (context != null) {
-            context.registerReceiver(broadcastReceiver, filter);
+
+        mContext = context;
+
+        if (mContext != null) {
+            mContext.registerReceiver(broadcastReceiver, filter);
             Log.d(TAG, "Registered receiver in constructor");
-        } else Log.d(TAG, "Could not register receiver in constructor, no context");
+        } else {
+            Log.d(TAG, "Could not register receiver in constructor, no context");
+        }
     }
 
     private TextView callSignInput;
@@ -111,9 +114,7 @@ public class PatientsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle saved) {
         super.onCreate(null);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            Context ctx = getContext();
-        }
+
         SquireDropDownReceiver.setSquireFragmentHeightDP(630);
         Log.d(TAG, "Set height to 1000dp");
         initData();
@@ -180,9 +181,7 @@ public class PatientsFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SEND);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getContext().registerReceiver(broadcastReceiver, filter);
-        }
+        mContext.registerReceiver(broadcastReceiver, filter);
         Log.d(TAG, "Broadcast receiver registered");
     }
 
@@ -455,9 +454,7 @@ public class PatientsFragment extends Fragment {
                     Log.d(TAG, "Getting heartbeat for device " + identifier);
                     if (polarApi == null) {
                         Log.e(TAG, "polarAPI is fucked");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            SquireMapComponent.setupAPI(getContext());
-                        }
+                        SquireMapComponent.setupAPI(mContext);
                     }
                     if (polarApi == null) {
                         Log.e(TAG, "super duper fucked");

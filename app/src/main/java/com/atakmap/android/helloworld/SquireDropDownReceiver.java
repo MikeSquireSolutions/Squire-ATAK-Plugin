@@ -17,6 +17,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -518,10 +519,10 @@ public class SquireDropDownReceiver extends DropDownReceiver implements
         scrollView = helloView.findViewById(R.id.squire_menu_scroll_view);
 
         polarDeviceFragment = new PolarDeviceFragment();
-        nineLineFragment = new NineLineFragment();
-        mistFragment = new MISTFragment();
-        patientsFragment = new PatientsFragment();
-        lzFragment = new LZFragment();
+        nineLineFragment = new NineLineFragment(pluginContext);
+        mistFragment = new MISTFragment(pluginContext);
+        patientsFragment = new PatientsFragment(pluginContext);
+        lzFragment = new LZFragment(pluginContext);
 
         medevacPttButton = helloView
                 .findViewById(R.id.squirePTTButton);
@@ -635,7 +636,9 @@ public class SquireDropDownReceiver extends DropDownReceiver implements
                         public void onClick(DialogInterface dialog, int which) {
                             CotEvent event = new CotEvent();
                             if (submission.nineline.getDateTime() == null || submission.nineline.getDateTime().length() == 0) {
-                                submission.nineline.setDateTime(Date.from(Instant.now()).toString());
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    submission.nineline.setDateTime(Date.from(Instant.now()).toString());
+                                }
                             }
                                 /*
                                 if (finalNineline != null) {

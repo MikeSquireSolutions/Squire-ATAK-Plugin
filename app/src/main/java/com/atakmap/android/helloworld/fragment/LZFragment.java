@@ -28,7 +28,7 @@ public class LZFragment extends Fragment {
     private static final String TAG = "LZFragment";
     private static final String prefs_name_string = "squire_medevac";
 
-    public LZFragment() {
+    public LZFragment(Context context) {
         super();
     }
 

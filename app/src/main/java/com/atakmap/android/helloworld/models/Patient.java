@@ -96,9 +96,9 @@ public class Patient {
     // Returns last heartRate
     public int getHeartRate() {
         int retVal = 0;
-        int lastIdx = heartRates.size() - 1;
+        int lastIdx = heartRates.size();
         try {
-            retVal = heartRates.get(lastIdx).getValue();
+            retVal = 0; //heartRates.get(lastIdx).getValue();
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
