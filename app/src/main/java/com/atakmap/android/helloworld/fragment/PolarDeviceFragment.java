@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +64,9 @@ public class PolarDeviceFragment extends DialogFragment {
         super.onCreate(bundle);
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SEND);
-        getContext().registerReceiver(connectDeviceReceiver, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getContext().registerReceiver(connectDeviceReceiver, filter);
+        }
     }
 
     @Override
@@ -186,7 +189,9 @@ public class PolarDeviceFragment extends DialogFragment {
     public List<Device> getSearchDataset() {
         datasetLock.lock();
         List<Device> retVal = new ArrayList<>(dataset.values());
-        retVal.sort((d1, d2) -> d1.getDeviceName().compareTo(d2.getDeviceName()));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            retVal.sort((d1, d2) -> d1.getDeviceName().compareTo(d2.getDeviceName()));
+        }
         datasetLock.unlock();
         return retVal;
     }

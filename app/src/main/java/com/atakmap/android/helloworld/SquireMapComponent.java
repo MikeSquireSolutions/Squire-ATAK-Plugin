@@ -8,16 +8,18 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.speech.tts.TextToSpeech;
+import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -28,21 +30,16 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
-import com.atak.plugins.impl.AtakPluginRegistry;
 import com.atakmap.android.contact.ContactLocationView;
 import com.atakmap.android.cot.CotMapComponent;
 import com.atakmap.android.cot.UIDHandler;
 import com.atakmap.android.cot.detail.CotDetailHandler;
 import com.atakmap.android.cot.detail.CotDetailManager;
 import com.atakmap.android.cotdetails.ExtendedInfoView;
-import com.atakmap.android.cotdetails.extras.ExtraDetailsManager;
-import com.atakmap.android.cotdetails.extras.ExtraDetailsProvider;
-import com.atakmap.android.data.URIContentManager;
 import com.atakmap.android.dropdown.DropDownMapComponent;
 import com.atakmap.android.helloworld.aidl.ILogger;
 import com.atakmap.android.helloworld.aidl.SimpleService;
 import com.atakmap.android.helloworld.db.ReportsRepository;
-import com.atakmap.android.helloworld.importer.HelloImportResolver;
 import com.atakmap.android.helloworld.models.HeartRate;
 import com.atakmap.android.helloworld.models.LZ;
 import com.atakmap.android.helloworld.models.MIST;
@@ -54,8 +51,6 @@ import com.atakmap.android.helloworld.models.SignsAndSymptoms;
 import com.atakmap.android.helloworld.models.Treatment;
 import com.atakmap.android.helloworld.plugin.R;
 import com.atakmap.android.helloworld.routes.RouteExportMarshal;
-import com.atakmap.android.helloworld.sender.HelloWorldContactSender;
-import com.atakmap.android.helloworld.service.ExampleAidlService;
 import com.atakmap.android.importexport.ExporterManager;
 import com.atakmap.android.importexport.ImportExportMapComponent;
 import com.atakmap.android.importexport.ImportReceiver;
@@ -84,8 +79,6 @@ import com.atakmap.coremap.log.Log;
 import com.atakmap.coremap.maps.coords.GeoBounds;
 import com.atakmap.coremap.maps.coords.GeoPoint;
 import com.atakmap.coremap.maps.time.CoordinatedTime;
-import com.atakmap.net.AtakAuthenticationCredentials;
-import com.atakmap.net.AtakAuthenticationDatabase;
 import com.atakmap.net.DeviceProfileClient;
 import com.google.gson.Gson;
 import com.polar.sdk.api.PolarBleApi;
@@ -140,17 +133,19 @@ public class SquireMapComponent extends DropDownMapComponent {
     public static final String SQUIRE_NOTIFICATION_ACTION = "com.atakmap.android.squire.NOTIFICATION";
     public static final String SQUIRE_NOTIFICATION_KEY_UID = "uid";
 
+    private static ReentrantLock polarApiLock = new ReentrantLock();
+    private static Map<String, UUID> deviceMap = new HashMap<>(); // maps device id to patient uuid
+    private static PolarBleApi polarApi = null;
+
     private Context pluginContext;
     private SquireDropDownReceiver dropDown;
     private WebViewDropDownReceiver wvdropDown;
     private SquireMapOverlay mapOverlay;
     private View genericRadio;
+    private JoystickView _joystickView;
     private SpecialDetailHandler sdh;
     private CotDetailHandler aaaDetailHandler;
     private ContactLocationView.ExtendedSelfInfoFactory extendedselfinfo;
-    private HelloWorldContactSender contactSender;
-    private ExtraDetailsProvider edp;
-    private HelloImportResolver helloImporter;
 
     //Squire
     private TextToSpeech.OnInitListener ttsInitListener;
@@ -158,47 +153,51 @@ public class SquireMapComponent extends DropDownMapComponent {
     TextToSpeech tts;
     HashSet<String> currentAlerts = new HashSet<>();
 
-    private static ReentrantLock polarApiLock = new ReentrantLock();
-    private static Map<String, UUID> deviceMap = new HashMap<>(); // maps device id to patient uuid
-    private static PolarBleApi polarApi = null;
+    public class JoystickView extends RelativeLayout {
+
+        public JoystickView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        @Override
+        public boolean onGenericMotionEvent(MotionEvent event) {
+            Log.d(TAG, "onGenericMotionEvent: " + event.toString());
+            return super.onGenericMotionEvent(event);
+        }
+
+        @Override
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+            Log.d(TAG, "onKeyDown: " + event.toString());
+            return super.onKeyDown(keyCode, event);
+        }
+
+        @Override
+        public boolean onKeyUp(int keyCode, KeyEvent event) {
+            Log.d(TAG, "onKeyUp: " + event.toString());
+            return super.onKeyUp(keyCode, event);
+        }
+    }
 
     @Override
     public void onStart(final Context context, final MapView view) {
         Log.d(TAG, "onStart");
-
-        setupAPI(mapView.getContext());
     }
 
     @Override
     public void onPause(final Context context, final MapView view) {
         Log.d(TAG, "onPause");
-
-        if (polarApi != null) {
-            polarApiLock.lock();
-            android.util.Log.d(TAG, "Api paused (background)");
-            polarApi.backgroundEntered();
-            polarApiLock.unlock();
-        }
     }
 
     @Override
     public void onResume(final Context context,
-            final MapView view) {
+                         final MapView view) {
         Log.d(TAG, "onResume");
-
-        polarApiLock.lock();
-        if (polarApi != null) {
-            android.util.Log.d(TAG, "Api resumed (foreground)");
-            polarApi.foregroundEntered();
-        }
-        polarApiLock.unlock();
     }
 
     @Override
     public void onStop(final Context context,
-            final MapView view) {
-        Log.d(TAG, "onStop");
-        shutdownAPI();
+                       final MapView view) {
+        Log.d(TAG, "onStop. Stopping location updates");
     }
 
     /**
@@ -213,32 +212,30 @@ public class SquireMapComponent extends DropDownMapComponent {
                 ImportExportMapComponent.ACTION_IMPORT_DATA);
         intent.putExtra(ImportReceiver.EXTRA_URI,
                 file.getAbsolutePath());
-        intent.putExtra(ImportReceiver.EXTRA_CONTENT,
-                LayersMapComponent.IMPORTER_CONTENT_TYPE);
-        intent.putExtra(ImportReceiver.EXTRA_MIME_TYPE,
-                LayersMapComponent.IMPORTER_DEFAULT_MIME_TYPE);
+        intent.putExtra(ImportReceiver.EXTRA_CONTENT, LayersMapComponent.IMPORTER_CONTENT_TYPE);
+        intent.putExtra(ImportReceiver.EXTRA_MIME_TYPE, LayersMapComponent.IMPORTER_DEFAULT_MIME_TYPE);
 
         AtakBroadcast.getInstance().sendBroadcast(intent);
-        Log.d(TAG, "testImportDone: " + file);
+        Log.d(TAG, "testImportDone: " + file.toString());
+
 
         /**
          * Case 2 where the file type is unknown and the file is just imported.
          */
-        Log.d(TAG, "testImport: " + file);
-        intent = new Intent(
-                ImportExportMapComponent.USER_HANDLE_IMPORT_FILE_ACTION);
+        Log.d(TAG, "testImport: " + file.toString());
+        intent = new Intent(ImportExportMapComponent.USER_HANDLE_IMPORT_FILE_ACTION);
         intent.putExtra("filepath", file.toString());
         intent.putExtra("importInPlace", false); // copies it over to the general location if true
-        intent.putExtra("promptOnMultipleMatch", true); //prompts the users if this could be multiple things
+        intent.putExtra( "promptOnMultipleMatch", true); //prompts the users if this could be multiple things
         intent.putExtra("zoomToFile", false); // zoom to the outer extents of the file.
         AtakBroadcast.getInstance().sendBroadcast(intent);
-        Log.d(TAG, "testImportDone: " + file);
+        Log.d(TAG, "testImportDone: " + file.toString());
 
     }
 
+
     @Override
-    public void onCreate(final Context context, Intent intent,
-            final MapView view) {
+    public void onCreate(final Context context, Intent intent, final MapView view) {
 
         // Set the theme.  Otherwise, the plugin will look vastly different
         // than the main ATAK experience.   The theme needs to be set
@@ -247,40 +244,62 @@ public class SquireMapComponent extends DropDownMapComponent {
 
         super.onCreate(context, intent, view);
         pluginContext = context;
-        this.mapView = view;
+        mapView = view;
 
         GLMapItemFactory.registerSpi(GLSpecialMarker.SPI);
 
-        // Register capability to handle detail tags that TAK does not
-        // normally process.
-        CotDetailManager.getInstance().registerHandler(
-                "__special",
-                sdh = new SpecialDetailHandler());
+        // Register capability to handle detail tags that TAK does not normally process.
+        CotDetailManager.getInstance().registerHandler("__special", sdh = new SpecialDetailHandler());
 
-        CotDetailManager.getInstance().registerHandler(
-                aaaDetailHandler = new CotDetailHandler("__aaa") {
-                    private final String TAG = "AAACotDetailHandler";
+        CotDetailManager.getInstance().registerHandler(aaaDetailHandler = new CotDetailHandler("__aaa") {
+            private final String TAG = "AAACotDetailHandler";
 
-                    @Override
-                    public CommsMapComponent.ImportResult toItemMetadata(
-                            MapItem item, CotEvent event, CotDetail detail) {
-                        Log.d(TAG, "detail received: " + detail + " in:  "
-                                + event);
-                        return CommsMapComponent.ImportResult.SUCCESS;
-                    }
+            @Override
+            public CommsMapComponent.ImportResult toItemMetadata(MapItem item, CotEvent event, CotDetail detail) {
+                Log.d(TAG, "detail received: " + detail + " in:  " + event);
+                return CommsMapComponent.ImportResult.SUCCESS;
+            }
 
-                    @Override
-                    public boolean toCotDetail(MapItem item, CotEvent event,
-                            CotDetail root) {
-                        Log.d(TAG, "converting to cot detail from: "
-                                + item.getUID());
-                        return true;
-                    }
-                });
+            @Override
+            public boolean toCotDetail(MapItem item, CotEvent event, CotDetail root) {
+                Log.d(TAG, "converting to cot detail from: " + item.getUID());
+                return true;
+            }
+        });
+
+
+        ReportsRepository.loadReportsFromPrefs(view.getContext());
+
+        createNotificationChannel(view.getContext());
+
+        IntentFilter reportIntentFilter = new IntentFilter();
+        reportIntentFilter.addAction(Intent.ACTION_SEND);
+        android.util.Log.d(TAG, "Broadcast receiver registered");
+
+        view.getContext().registerReceiver(
+                squireNotificationReceiver,
+                new IntentFilter(SQUIRE_NOTIFICATION_ACTION)
+        );
+
+        ttsInitListener = status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                int result = tts.setLanguage(Locale.US);
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e(TAG, "TTS - This Language is not supported");
+                }
+            } else {
+                Log.e(TAG, "TTS Initialization Failed!");
+            }
+        };
+
+        tts = new TextToSpeech(view.getContext(), ttsInitListener);
+        ReportsRepository.loadReportsFromPrefs(view.getContext());
 
         //HelloWorld MapOverlay added to Overlay Manager.
         this.mapOverlay = new SquireMapOverlay(view, pluginContext);
         view.getMapOverlayManager().addOverlay(this.mapOverlay);
+
+
 
         //MapView.getMapView().getRootGroup().getChildGroupById(id).setVisible(true);
 
@@ -297,8 +316,9 @@ public class SquireMapComponent extends DropDownMapComponent {
         // trigger for this visual component is an intent.
         // see the plugin.HelloWorldTool where that intent
         // is triggered.
-        this.dropDown = new SquireDropDownReceiver(view, context,
-                this.mapOverlay, this);
+        this.dropDown = new SquireDropDownReceiver(view, context, this.mapOverlay, this);
+
+
 
         // We use documented intent filters within the system
         // in order to automatically document all of the
@@ -337,14 +357,14 @@ public class SquireMapComponent extends DropDownMapComponent {
         UIDHandler.getInstance().addAttributeInjector(
                 new UIDHandler.AttributeInjector() {
                     public void injectIntoDetail(Marker marker,
-                            CotDetail detail) {
+                                                 CotDetail detail) {
                         if (marker.getType().startsWith("a-f"))
                             return;
                         detail.setAttribute("nett", "XX");
                     }
 
                     public void injectIntoMarker(CotDetail detail,
-                            Marker marker) {
+                                                 Marker marker) {
                         if (marker.getType().startsWith("a-f"))
                             return;
                         String callsign = detail.getAttribute("nett");
@@ -358,12 +378,17 @@ public class SquireMapComponent extends DropDownMapComponent {
         // to use the context from ATAK since it has the permission to read
         // and write preferences.
         // Additionally - in the XML file you cannot use PreferenceCategory
-        // to enclose your Preferences - otherwise the preference will not
+        // to enclose your Prefences - otherwise the preference will not
         // be persisted.   You can fake a PreferenceCategory by adding an
         // empty preference category at the top of each group of preferences.
         // See how this is done in the current example.
 
-        DangerCloseReceiver.ExternalMunitionQuery emq = () -> BuildExternalMunitionsQuery();
+        DangerCloseReceiver.ExternalMunitionQuery emq = new DangerCloseReceiver.ExternalMunitionQuery() {
+            @Override
+            public String queryMunitions() {
+                return BuildExternalMunitionsQuery();
+            }
+        };
 
         DangerCloseReceiver.getInstance().setExternalMunitionQuery(emq);
 
@@ -371,8 +396,8 @@ public class SquireMapComponent extends DropDownMapComponent {
         ToolsPreferenceFragment
                 .register(
                         new ToolsPreferenceFragment.ToolPreference(
-                                "Hello World Preferences",
-                                "This is the sample preference for Hello World",
+                                "Squire Preferences",
+                                "Squire Medevac Preferences",
                                 "helloWorldPreference",
                                 context.getResources().getDrawable(
                                         R.drawable.ic_launcher, null),
@@ -383,38 +408,36 @@ public class SquireMapComponent extends DropDownMapComponent {
         LayoutInflater inflater = LayoutInflater.from(pluginContext);
         genericRadio = inflater.inflate(R.layout.radio_item_generic, null);
 
-        RadioMapComponent.getInstance().registerControl("generic-radio-uid", genericRadio);
+        RadioMapComponent.getInstance().registerControl(genericRadio);
 
         // demonstrate how to customize the view for ATAK contacts.   In this case
         // it will show a customized line of test when pulling up the contact
         // detail view.
-        ContactLocationView.register(
-                extendedselfinfo = new ContactLocationView.ExtendedSelfInfoFactory() {
+        ContactLocationView.register(extendedselfinfo =
+                new ContactLocationView.ExtendedSelfInfoFactory() {
                     @Override
                     public ExtendedInfoView createView() {
                         return new ExtendedInfoView(view.getContext()) {
                             @Override
                             public void setMarker(PointMapItem m) {
-                                Log.d(TAG, "setting the marker: "
-                                        + m.getMetaString("callsign", ""));
+                                Log.d(TAG, "setting the marker: " + m.getMetaString("callsign", ""));
                                 TextView tv = new TextView(view.getContext());
-                                tv.setLayoutParams(new LayoutParams(
-                                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                                        LayoutParams.WRAP_CONTENT));
+                                tv.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
                                 this.addView(tv);
-                                tv.setText("Example: " + m
-                                        .getMetaString("callsign", "unknown"));
+                                tv.setText("Example: " + m.getMetaString("callsign", "unknown"));
 
                             }
                         };
                     }
-                });
+                }
+        );
+
 
         // send out some customized information as part of the SA or PPLI message.
         CotDetail cd = new CotDetail("temp");
         cd.setAttribute("temp", Integer.toString(76));
-        CotMapComponent.getInstance().addAdditionalDetail(cd.getElementName(),
-                cd);
+        CotMapComponent.getInstance().addAdditionalDetail(cd.getElementName(), cd);
+
 
         // register a listener for when a the radial menu asks for a special
         // drop down.  SpecialDetail is really a skeleton of a class that
@@ -449,6 +472,12 @@ public class SquireMapComponent extends DropDownMapComponent {
             }
         });
 
+        //_joystickView = new JoystickView(context, (AttributeSet) new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        _joystickView = new JoystickView(context, null);
+
+        ViewGroup v = (ViewGroup) view.getParent().getParent();
+        v.addView(_joystickView);
+
         GeocodeManager.getInstance(context).registerGeocoder(fakeGeoCoder);
 
         TextView tv = new TextView(context);
@@ -466,10 +495,12 @@ public class SquireMapComponent extends DropDownMapComponent {
                 new com.atakmap.android.video.VideoViewLayer("test-layer", tv,
                         lp_tv));
 
+
         ExporterManager.registerExporter(
                 context.getString(R.string.route_exporter_name),
                 context.getDrawable(R.drawable.ic_route),
                 RouteExportMarshal.class);
+
 
         // Code to listen for when a state saver is completely loaded or wait to perform some action
         // after all of the markers are completely loaded.
@@ -481,8 +512,7 @@ public class SquireMapComponent extends DropDownMapComponent {
             }
         };
         AtakBroadcast.getInstance().registerReceiver(ssLoadedReceiver,
-                new DocumentedIntentFilter(
-                        StateSaverPublisher.STATESAVER_COMPLETE_LOAD));
+                new DocumentedIntentFilter(StateSaverPublisher.STATESAVER_COMPLETE_LOAD));
         // because the plugin can be loaded after the above intent has been fired, there is a method
         // to check to see if a load has already occured.
 
@@ -491,71 +521,7 @@ public class SquireMapComponent extends DropDownMapComponent {
             AtakBroadcast.getInstance().unregisterReceiver(ssLoadedReceiver);
             // action for when the statesaver is completely loaded
         }
-
-        // example of how to save and retrieve credentials using the credential management system
-        // within core ATAK
-        saveAndRetrieveCredentials();
-
-        // Content sender example
-        URIContentManager.getInstance().registerSender(
-                contactSender = new HelloWorldContactSender(view,
-                        pluginContext));
-
-        Log.d(TAG, "binding to the simple aidl service");
-        final Intent serviceIntent = new Intent(pluginContext,
-                ExampleAidlService.class);
-        view.getContext().bindService(serviceIntent, connection,
-                Context.BIND_AUTO_CREATE);
-        Log.d(TAG, "finished calling bindService to the simple aidl service");
-
-
-        // In this example we only need to request the permission if the OS is 13 or higher - but
-        // one can adapt this example for any number of versions.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            final Intent permissionActivity = new Intent(context, PluginPermissionActivity.class);
-            permissionActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(permissionActivity);
-
-            DocumentedIntentFilter dif = new DocumentedIntentFilter(PluginPermissionActivity.PLUGIN_PERMISSION_REQUEST_ERROR);
-            AtakBroadcast.getInstance().registerSystemReceiver(br, dif);
-        }
-
-        ExtraDetailsManager.getInstance().addProvider(edp = new ExtraDetailsProvider() {
-            @Override
-            public View getExtraView(MapItem mapItem, View existing) {
-                if (existing == null) {
-
-                    TextView tv = new TextView(view.getContext());
-                    tv.setBackgroundColor(Color.RED);
-                    tv.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    existing = tv;
-                }
-                if (mapItem != null)
-                    ((TextView)existing).setText("Extra User Experience Provided by HelloWorld: " + mapItem.getTitle());
-
-                return existing;
-            }
-        });
-
-        ImportExportMapComponent.getInstance().addImporterClass(
-                this.helloImporter = new HelloImportResolver(view));
     }
-
-    final BroadcastReceiver br = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            final String action = intent.getAction();
-            if (action == null)
-                return;
-
-            if (action.equals(PluginPermissionActivity.PLUGIN_PERMISSION_REQUEST_ERROR)) {
-                Log.d(TAG, "user has decided not to provide the appropriate permissions");
-                AtakPluginRegistry.get().unloadPlugin("com.atakmap.android.helloworld.plugin");
-            }
-        }
-    };
-
 
     private final GeocodeManager.Geocoder fakeGeoCoder = new GeocodeManager.Geocoder() {
         @Override
@@ -621,7 +587,7 @@ public class SquireMapComponent extends DropDownMapComponent {
 
     private SpiListener spiListener;
 
-    private static class SpiListener implements MapEventDispatchListener,
+    private class SpiListener implements MapEventDispatchListener,
             MapItem.OnVisibleChangedListener {
         private final MapView view;
 
@@ -657,23 +623,26 @@ public class SquireMapComponent extends DropDownMapComponent {
 
     @Override
     protected void onDestroyImpl(Context context, MapView view) {
-        ExtraDetailsManager.getInstance().removeProvider(edp);
         Log.d(TAG, "calling on destroy");
         ContactLocationView.unregister(extendedselfinfo);
         GLMapItemFactory.unregisterSpi(GLSpecialMarker.SPI);
         this.dropDown.dispose();
         ToolsPreferenceFragment.unregister("helloWorldPreference");
-        RadioMapComponent.getInstance().unregisterControl("generic-radio-uid");
+        RadioMapComponent.getInstance().unregisterControl(genericRadio);
         view.getMapOverlayManager().removeOverlay(mapOverlay);
         CotDetailManager.getInstance().unregisterHandler(
                 sdh);
         CotDetailManager.getInstance().unregisterHandler(aaaDetailHandler);
         ExporterManager.unregisterExporter(
                 context.getString(R.string.route_exporter_name));
-        URIContentManager.getInstance().unregisterSender(contactSender);
-        if (helloImporter != null) {
-            ImportExportMapComponent.getInstance().removeImporterClass(this.helloImporter);
+
+        view.getContext().unregisterReceiver(squireNotificationReceiver);
+
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
         }
+
         super.onDestroyImpl(context, view);
 
         // Example call on how to end ATAK if the plugin is unloaded.
@@ -723,59 +692,6 @@ public class SquireMapComponent extends DropDownMapComponent {
                     + ex.getMessage());
         }
         return xmlString;
-    }
-
-    /**
-     * This is a simple example on how to save, retrieve and delete credentials in ATAK using the
-     * credential management system.
-     */
-    private void saveAndRetrieveCredentials() {
-        AtakAuthenticationDatabase.saveCredentials("helloworld.plugin", "",
-                "username", "password", false);
-        // can also specify a host if needed
-        AtakAuthenticationCredentials aac = AtakAuthenticationDatabase
-                .getCredentials("helloworld.plugin", "");
-        if (aac != null) {
-            Log.d(TAG, "credentials: " + aac.username + " " + aac.password);
-        }
-        AtakAuthenticationDatabase.delete("helloworld.plugin", "");
-
-        aac = AtakAuthenticationDatabase.getCredentials("helloworld.plugin",
-                "");
-        if (aac == null)
-            Log.d(TAG, "deleted credentials");
-        else
-            Log.d(TAG, "credentials: " + aac.username + " " + aac.password);
-
-    }
-
-    String displayAlert(MapView mapView, String title, Report submission) {
-        String message = submissionToMessage(submission);
-
-        if (!currentAlerts.contains(submission.uid)) {
-            currentAlerts.add(submission.uid);
-
-            Context context = mapView.getContext();
-            ContextCompat.getMainExecutor(context).execute(() -> new AlertDialog.Builder(context)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setOnCancelListener(dialogInterface -> {
-                        currentAlerts.remove(submission.uid);
-                    })
-                    .setPositiveButton("Ok", (dialog, which) -> {
-                        currentAlerts.remove(submission.uid);
-                        Log.d(SquireDropDownReceiver.TAG, "Clicked accept");
-                    })
-                    .setNegativeButton("Read Back", (dialogInterface, i) -> {
-                        currentAlerts.remove(submission.uid);
-                        if (tts != null) {
-                            audioReadback(submission);
-                        }
-                    })
-                    .show());
-        }
-
-        return message;
     }
 
     public static String submissionToMessage(Report submission) {
@@ -873,6 +789,24 @@ public class SquireMapComponent extends DropDownMapComponent {
         return message;
     }
 
+    public static String prettifyString(Object o) {
+        if (o == null) return "";
+        StringBuilder retVal = new StringBuilder();
+        String[] splits = o.toString().replaceAll("_", " ").split("\\s+");
+
+        for (String s : splits) {
+            if (s.length() < 1) continue;
+            if (retVal.length() > 0) retVal.append(" ");
+
+            String lower = s.toLowerCase();
+            retVal.append(("" + lower.charAt(0)).toUpperCase());
+            if (s.length() > 1) retVal.append(lower.substring(1));
+        }
+
+        return retVal.toString();
+    }
+
+
     // Patient counts by priority/precedence
     public static String getPatientsString(List<Patient> patients){
         String retVal = "";
@@ -953,21 +887,36 @@ public class SquireMapComponent extends DropDownMapComponent {
         return retVal;
     }
 
-    public static String prettifyString(Object o) {
-        if (o == null) return "";
-        StringBuilder retVal = new StringBuilder();
-        String[] splits = o.toString().replaceAll("_", " ").split("\\s+");
+    /**
+     * @return message
+     */
+    String displayAlert(MapView mapView, String title, Report submission) {
+        String message = submissionToMessage(submission);
 
-        for (String s : splits) {
-            if (s.length() < 1) continue;
-            if (retVal.length() > 0) retVal.append(" ");
+        if (!currentAlerts.contains(submission.uid)) {
+            currentAlerts.add(submission.uid);
 
-            String lower = s.toLowerCase();
-            retVal.append(("" + lower.charAt(0)).toUpperCase());
-            if (s.length() > 1) retVal.append(lower.substring(1));
+            Context context = mapView.getContext();
+            ContextCompat.getMainExecutor(context).execute(() -> new AlertDialog.Builder(context)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setOnCancelListener(dialogInterface -> {
+                        currentAlerts.remove(submission.uid);
+                    })
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        currentAlerts.remove(submission.uid);
+                        Log.d(SquireDropDownReceiver.TAG, "Clicked accept");
+                    })
+                    .setNegativeButton("Read Back", (dialogInterface, i) -> {
+                        currentAlerts.remove(submission.uid);
+                        if (tts != null) {
+                            audioReadback(submission);
+                        }
+                    })
+                    .show());
         }
 
-        return retVal.toString();
+        return message;
     }
 
     void audioReadback(Report submission) {

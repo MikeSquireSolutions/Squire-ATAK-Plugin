@@ -538,7 +538,7 @@ public class SquireDropDownReceiver extends DropDownReceiver implements
             micDialog.show(((Activity) mapView.getContext()).getFragmentManager().beginTransaction(), "MicDialog");
         });
 
-        testMe = (Callable) () -> {
+        testMe = () -> {
             Log.d(TAG, "heart rate button clicked");
             Log.d(TAG, "Starting fragment dialog?");
             polarDeviceFragView = PluginLayoutInflater.inflate(pluginContext,
@@ -557,7 +557,7 @@ public class SquireDropDownReceiver extends DropDownReceiver implements
             return null;
         };
 
-        openReportDialog = (Callable) () -> {
+        openReportDialog = () -> {
             reportFragView = PluginLayoutInflater.inflate(pluginContext,
                     R.layout.reports_fragment, null);
             reportDialog = ReportFragment.newInstance();
@@ -572,7 +572,7 @@ public class SquireDropDownReceiver extends DropDownReceiver implements
         };
 
         // Move submission to the button in report fragment
-        submitReportsToAtak = (Callable) () -> {
+        submitReportsToAtak = () -> {
             SharedPreferences sharedSettingsPreferences = getSharedPreferences(mapView.getContext());
             boolean readbackFlag = sharedSettingsPreferences.getBoolean("readback", true);
             String message = "";
