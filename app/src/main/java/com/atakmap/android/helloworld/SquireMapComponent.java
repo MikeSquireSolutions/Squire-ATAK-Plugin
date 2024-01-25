@@ -1,6 +1,8 @@
 
 package com.atakmap.android.helloworld;
 
+import static android.content.Context.RECEIVER_EXPORTED;
+
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -278,7 +280,8 @@ public class SquireMapComponent extends DropDownMapComponent {
 
         view.getContext().registerReceiver(
                 squireNotificationReceiver,
-                new IntentFilter(SQUIRE_NOTIFICATION_ACTION)
+                new IntentFilter(SQUIRE_NOTIFICATION_ACTION),
+                RECEIVER_EXPORTED
         );
 
         ttsInitListener = status -> {

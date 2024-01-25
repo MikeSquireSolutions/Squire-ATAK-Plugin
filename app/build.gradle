@@ -59,7 +59,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.2.2'
         if(isDevKitEnabled()) {
             classpath "com.atakmap.gradle:atak-gradle-takdev:${takdevVersion}"
         } else {
@@ -110,7 +110,6 @@ def supportedFlavors =
 
 android {
     compileSdkVersion 33
-    buildToolsVersion "30.0.3"
 
     bundle {
         storeArchive {
@@ -223,20 +222,18 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 29
         targetSdkVersion 33
 
         def runTasks = gradle.startParameter.taskNames
-        if(runTasks.toString().contains('bundle')) {
-            ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a"
-            }
-        } else { 
-            ndk {
-                abiFilters "armeabi-v7a", "arm64-v8a", "x86"
-            }
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
     }
+    buildFeatures {
+        aidl true
+    }
+    namespace 'com.atakmap.android.helloworld.plugin'
 }
 
 
@@ -247,7 +244,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.protobuf:protobuf-lite:3.0.0'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.16.0'

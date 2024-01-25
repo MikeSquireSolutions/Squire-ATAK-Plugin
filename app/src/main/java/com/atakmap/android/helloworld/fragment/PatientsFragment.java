@@ -49,7 +49,7 @@ public class PatientsFragment extends Fragment {
         mContext = context;
 
         if (mContext != null) {
-            mContext.registerReceiver(broadcastReceiver, filter);
+            mContext.registerReceiver(broadcastReceiver, filter, Context.RECEIVER_EXPORTED);
             Log.d(TAG, "Registered receiver in constructor");
         } else {
             Log.d(TAG, "Could not register receiver in constructor, no context");
@@ -181,7 +181,7 @@ public class PatientsFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SEND);
-        mContext.registerReceiver(broadcastReceiver, filter);
+        mContext.registerReceiver(broadcastReceiver, filter, Context.RECEIVER_EXPORTED);
         Log.d(TAG, "Broadcast receiver registered");
     }
 
